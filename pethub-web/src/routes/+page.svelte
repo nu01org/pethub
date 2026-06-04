@@ -6,12 +6,12 @@
 				Keep pet routines, updates, and happy moments in one simple place. Pet Hub helps you stay connected to your companions every day.
 			</p>
 			<div class="flex flex-wrap items-center gap-3">
-				<a
+				<!-- <a
 					href="/demo/better-auth/login"
 					class="rounded-full bg-violet-600 px-6 py-3 text-base font-semibold text-white shadow-lg shadow-violet-200 transition hover:bg-violet-700 focus:outline-none focus:ring-4 focus:ring-violet-200"
 				>
 					Log in
-				</a>
+				</a> -->
 			</div>
 
 		</article>
