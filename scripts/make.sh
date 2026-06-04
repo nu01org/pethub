@@ -8,7 +8,7 @@ PROJECT_DIR="$(cd "$SCRIPT_DIR/../pethub-web" && pwd)"
 cd "$PROJECT_DIR"
 
 echo "Installing production dependencies..."
-npm ci
+npm ci 
 
 echo "Running validation checks..."
 npm run check
