@@ -2,8 +2,8 @@
 import * as cdk from 'aws-cdk-lib/core';
 import { NetStack } from '../lib/net-stack';
 import { DbStack } from '../lib/db-stack';
-import { EcsStack } from '../lib_todo/ecs-stack';
-import { DistributionStack } from '../lib_todo/distribution-stack';
+//import { EcsStack } from '../lib_todo/ecs-stack';
+//import { DistributionStack } from '../lib_todo/distribution-stack';
 
 const app = new cdk.App();
 
@@ -31,6 +31,7 @@ const dbStack = new DbStack(app, 'PethubDbStack', {
 });
 
 // ── Tier 3: application (ECS Fargate + ALB) ───────────────────────────────────
+/*
 const ecsStack = new EcsStack(app, 'PethubEcsStack', {
   env,
   vpc: netStack.vpc,
@@ -41,11 +42,14 @@ const ecsStack = new EcsStack(app, 'PethubEcsStack', {
   // memoryMiB:     1024,
   // desiredCount:  1,
 });
+*/
 
 // ── Tier 4: distribution (CloudFront) ────────────────────────────────────────
 // CloudFront is a global service — must be deployed to us-east-1.
+/*
 new DistributionStack(app, 'PethubDistributionStack', {
   env: { account: env.account, region: 'us-east-1' },
   alb: ecsStack.alb,
   // defaultTtl: cdk.Duration.seconds(0),  // no caching for SSR (default)
 });
+*/
