@@ -1,0 +1,6 @@
+processes:
+  pethub-web:
+    command: ./scripts/pethub-web-start.sh
+  nginx:
+    command: >
+      nginx -c $PWD/nginx.conf -g 'daemon off;'

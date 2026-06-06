@@ -15,21 +15,19 @@ fi
 : "${CDK_DEFAULT_ACCOUNT:?CDK_DEFAULT_ACCOUNT is not set. Check .envrc}"
 : "${CDK_DEFAULT_REGION:?CDK_DEFAULT_REGION is not set. Check .envrc}"
 
-IMAGE="${REGISTRY_USERNAME}/pethub-web:latest"
 
-# ── Build & push container image ──────────────────────────────────────────────
-echo "==> Building image: $IMAGE"
-docker build \
-  --progress=plain \
-  -f "$REPO_ROOT/pethub-web.Containerfile" \
-  -t "$IMAGE" \
-  "$REPO_ROOT"
-
-echo "==> Pushing image: $IMAGE"
-docker push "$IMAGE"
+source "$SCRIPT_DIR/images-push.sh"
 
 # ── Deploy CDK stacks ─────────────────────────────────────────────────────────
 echo "==> Deploying CDK stacks"
 cd "$REPO_ROOT/pethub-cdk"
 npm run build
-npx cdk deploy "**" --require-approval never
+CDK_XARGS="--require-approval never  --no-rollback"
+npx cdk deploy "**" $CDK_XARGS
+
+#TODO Prefix stack name with tenant id
+PH_ALB_DNS_NAME=$(aws cloudformation describe-stacks \
+  --stack-name PethubEcsStack \
+  --query "Stacks[0].Outputs[?OutputKey=='AlbDns'].OutputValue" \
+  --output text)
+echo "PH_ALB_DNS_NAME=${PH_ALB_DNS_NAME}"
