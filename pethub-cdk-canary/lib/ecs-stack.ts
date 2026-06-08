@@ -11,14 +11,11 @@ import * as secretsmanager from 'aws-cdk-lib/aws-secretsmanager';
 import {
   getListParameter,
   getParameter,
-} from './cdk-utils';
-
-import {
   Settings,
   getEnvBool,
   getEnvNumber,
   getTenantDomain,
-} from './settings';
+} from 'pethub-cdk';
 
 export interface EcsStackProps
   extends cdk.StackProps {

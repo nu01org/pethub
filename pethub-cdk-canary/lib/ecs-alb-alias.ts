@@ -9,11 +9,9 @@ import {
   Settings,
   getEnv,
   getTenantDomain,
-} from './settings';
+  getParameter
+} from 'pethub-cdk';
 
-import {
-  getParameter,
-} from './cdk-utils';
 
 export interface ECSALBAliasStackProps
   extends cdk.StackProps {

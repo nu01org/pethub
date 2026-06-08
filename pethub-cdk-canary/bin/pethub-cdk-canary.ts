@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import * as cdk from 'aws-cdk-lib/core';
 import { EcsStack } from '../lib/ecs-stack';
-import { getEnv, Settings } from '../lib/settings';
+import { getEnv, Settings } from 'pethub-cdk';
 import { ECSALBAliasStack } from '../lib/ecs-alb-alias';
 
 const app = new cdk.App();

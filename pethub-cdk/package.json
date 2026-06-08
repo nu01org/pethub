@@ -1,6 +1,14 @@
 {
   "name": "pethub-cdk",
   "version": "0.1.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc"
+  },
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
@@ -16,7 +24,7 @@
     "ts-node": "^10.9.2",
     "typescript": "~5.9.3"
   },
-  "dependencies": {
+  "peerDependencies": {
     "aws-cdk-lib": "^2.257.0",
     "constructs": "^10.5.0"
   }
