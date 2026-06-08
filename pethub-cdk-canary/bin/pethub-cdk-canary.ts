@@ -27,3 +27,9 @@ const ecsStack = new EcsStack(app, 'PHEcsStack', {
   // memoryMiB:     1024,
   // desiredCount:  1,
 });
+
+const albAliasStack = new ECSALBAliasStack(app, 'PHAlbAliasStack', {
+  env,
+  alb: ecsStack.alb
+});
+albAliasStack.addDependency(ecsStack, "ALB Alias Stack depends on ECS Stack");

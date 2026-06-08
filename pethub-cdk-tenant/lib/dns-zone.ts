@@ -7,6 +7,7 @@ import {
   Settings,
   getEnv,
 } from './settings';
+import { setParameter } from './cdk-utils';
 
 export class TenantDnsStack extends cdk.Stack {
   public readonly tenantHostedZone: route53.PublicHostedZone;
@@ -43,6 +44,7 @@ export class TenantDnsStack extends cdk.Stack {
         },
       );
 
+    setParameter(this, 'PH_TENANT_HOSTED_ZONE_ID', this.tenantHostedZone.hostedZoneId);
     new cdk.CfnOutput(
       this,
       'TenantHostedZoneId',

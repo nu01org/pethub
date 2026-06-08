@@ -2,14 +2,19 @@ import * as cdk from 'aws-cdk-lib/core';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import { Construct } from 'constructs';
 
-import { setParameter } from './cdk-utils';
+import {
+  setParameter,
+  setListParameter,
+} from './cdk-utils';
 
-export interface NetStackProps extends cdk.StackProps {
+export interface NetStackProps
+  extends cdk.StackProps {
   readonly maxAzs?: number;
 }
 
 export class NetStack extends cdk.Stack {
   public readonly vpc: ec2.Vpc;
+
   public readonly dbSecurityGroup: ec2.SecurityGroup;
 
   constructor(
@@ -17,9 +22,15 @@ export class NetStack extends cdk.Stack {
     id: string,
     props: NetStackProps = {},
   ) {
-    super(scope, id, props);
+    super(
+      scope,
+      id,
+      props,
+    );
 
-    const { maxAzs = 3 } = props;
+    const {
+      maxAzs = 3,
+    } = props;
 
     //
     // VPC
@@ -35,14 +46,18 @@ export class NetStack extends cdk.Stack {
         subnetConfiguration: [
           {
             name: 'public',
+
             subnetType:
               ec2.SubnetType.PUBLIC,
+
             cidrMask: 24,
           },
           {
             name: 'application',
+
             subnetType:
               ec2.SubnetType.PRIVATE_ISOLATED,
+
             cidrMask: 24,
           },
         ],
@@ -248,26 +263,28 @@ export class NetStack extends cdk.Stack {
       endpointSecurityGroup.securityGroupId,
     );
 
-    setParameter(
+    setListParameter(
       this,
       'PUBLIC_SUBNET_IDS',
-      this.vpc.publicSubnets
-        .map(
-          (subnet) =>
-            subnet.subnetId,
-        )
-        .join(','),
+      this.vpc.publicSubnets.map(
+        (subnet) =>
+          subnet.subnetId,
+      ),
     );
 
-    setParameter(
+    setListParameter(
       this,
       'PRIVATE_SUBNET_IDS',
-      this.vpc.isolatedSubnets
-        .map(
-          (subnet) =>
-            subnet.subnetId,
-        )
-        .join(','),
+      this.vpc.isolatedSubnets.map(
+        (subnet) =>
+          subnet.subnetId,
+      ),
+    );
+
+    setListParameter(
+      this,
+      'AVAILABILITY_ZONES',
+      this.vpc.availabilityZones,
     );
 
     //
@@ -277,8 +294,12 @@ export class NetStack extends cdk.Stack {
       this,
       'VpcId',
       {
-        value: this.vpc.vpcId,
-        description: 'VPC ID',
+        value:
+          this.vpc.vpcId,
+
+        description:
+          'VPC ID',
+
         exportName:
           `${this.stackName}-VpcId`,
       },
@@ -298,12 +319,6 @@ export class NetStack extends cdk.Stack {
         exportName:
           `${this.stackName}-DbSecurityGroupId`,
       },
-    );
-
-    setParameter(
-      this,
-      'AVAILABILITY_ZONES',
-      this.vpc.availabilityZones.join(','),
     );
   }
 }

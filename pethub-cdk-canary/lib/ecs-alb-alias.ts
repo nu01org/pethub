@@ -11,11 +11,17 @@ import {
   getTenantDomain,
 } from './settings';
 
-export interface ECSALBAliasStackProps extends cdk.StackProps {
+import {
+  getParameter,
+} from './cdk-utils';
+
+export interface ECSALBAliasStackProps
+  extends cdk.StackProps {
   readonly alb: elbv2.IApplicationLoadBalancer;
 }
 
-export class ECSALBAliasStack extends cdk.Stack {
+export class ECSALBAliasStack
+  extends cdk.Stack {
   public readonly fqdn: string;
 
   constructor(
@@ -23,22 +29,38 @@ export class ECSALBAliasStack extends cdk.Stack {
     id: string,
     props: ECSALBAliasStackProps,
   ) {
-    super(scope, id, props);
-
-    const tenantDomain = getTenantDomain();
-
-    const canaryId = getEnv(
-      Settings.PH_CANARY_ID,
+    super(
+      scope,
+      id,
+      props,
     );
 
-    this.fqdn = `${canaryId}.${tenantDomain}`;
+    const tenantDomain =
+      getTenantDomain();
+
+    const canaryId =
+      getEnv(
+        Settings.PH_CANARY_ID,
+      );
+
+    this.fqdn =
+      `${canaryId}.${tenantDomain}`;
+
+    const hostedZoneId =
+      getParameter(
+        this,
+        'PH_TENANT_HOSTED_ZONE_ID',
+      );
 
     const hostedZone =
-      route53.HostedZone.fromLookup(
+      route53.HostedZone.fromHostedZoneAttributes(
         this,
         'TenantHostedZone',
         {
-          domainName: tenantDomain,
+          hostedZoneId,
+
+          zoneName:
+            tenantDomain,
         },
       );
 
@@ -46,9 +68,11 @@ export class ECSALBAliasStack extends cdk.Stack {
       this,
       'CanaryAliasRecord',
       {
-        zone: hostedZone,
+        zone:
+          hostedZone,
 
-        recordName: canaryId,
+        recordName:
+          canaryId,
 
         target:
           route53.RecordTarget.fromAlias(
@@ -63,7 +87,8 @@ export class ECSALBAliasStack extends cdk.Stack {
       this,
       'CanaryUrl',
       {
-        value: `https://${this.fqdn}`,
+        value:
+          `https://${this.fqdn}`,
       },
     );
 
@@ -71,7 +96,8 @@ export class ECSALBAliasStack extends cdk.Stack {
       this,
       'CanaryFqdn',
       {
-        value: this.fqdn,
+        value:
+          this.fqdn,
       },
     );
   }

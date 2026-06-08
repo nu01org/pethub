@@ -44,3 +44,46 @@ export function getParameter(
     paramName
   );
 }
+
+export function getListParameter(
+  scope: Construct,
+  paramId: string,
+): string[] {
+  const paramName =
+    `/${PH_TENANT_ID}/${paramId}`;
+
+  return ssm.StringListParameter.valueForTypedListParameter(
+    scope,
+    paramName,
+  );
+}
+
+/**
+ * Creates an SSM StringList parameter.
+ */
+export function setListParameter(
+  scope: Construct,
+  paramId: string,
+  paramValues: string[],
+): ssm.CfnParameter {
+  const paramName =
+    `/${PH_TENANT_ID}/${paramId}`;
+
+  return new ssm.CfnParameter(
+    scope,
+    `${paramId}List`,
+    {
+      name:
+        paramName,
+
+      type:
+        'StringList',
+
+      value:
+        paramValues.join(','),
+
+      description:
+        `List parameter ${paramId}`,
+    },
+  );
+}
