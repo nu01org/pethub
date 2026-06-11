@@ -1,0 +1,19 @@
+services:
+  # docker compose up postgresql
+  postgresql:
+    # aws rds describe-db-engine-versions --engine aurora-postgresql --query '*[].[EngineVersion]' --output text
+    image: postgres:18.3 # latest on Aurora Serverless
+    network_mode: bridge
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: pethub_db_user
+      POSTGRES_PASSWORD: pethub_dev_password
+      POSTGRES_DB: pethub_db
+    volumes:
+      - pgdata:/var/lib/postgresql
+
+volumes:
+  pgdata:
+    driver: local
+#

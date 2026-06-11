@@ -1,6 +1,11 @@
 processes:
+
+  postgresql:
+    command: docker compose up postgresql
+  
   pethub-web:
     command: ./scripts/pethub-web-start.sh
-  nginx:
+  
+nginx:
     command: >
       nginx -c $PWD/nginx.conf -g 'daemon off;'

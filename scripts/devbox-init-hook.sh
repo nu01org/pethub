@@ -1,10 +1,23 @@
 #!/bin/bash
 set -e
 
+REPO_ROOT=$(git rev-parse --show-toplevel)
+
+# If .envrc exists, source it to load environment variables
+if [ -f "$REPO_ROOT/.envrc" ]; then
+    echo "Sourcing .envrc to load environment variables"
+    source "$REPO_ROOT/.envrc"
+else
+    echo "No .envrc file found, skipping"
+fi
+
+
 # Initialize PostgreSQL if PGDATA doesn't exist yet
 if [ ! -d "$PGDATA" ]; then
     echo "Initializing PostgreSQL data directory at $PGDATA"
     initdb -D "$PGDATA"
+else
+    echo "PostgreSQL data directory already exists at $PGDATA"
 fi
 
 #TODO: Push fetch_url_file to utils.sh

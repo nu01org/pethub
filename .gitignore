@@ -13,3 +13,6 @@ pethub.zip
 node_modules
 .devbox
 devbox.d
+
+.pgdata
+
