@@ -5,6 +5,9 @@ import { playwright } from '@vitest/browser-playwright';
 import { sveltekit } from '@sveltejs/kit/vite';
 
 export default defineConfig({
+	server: {
+		allowedHosts: ['host.docker.internal']
+	},
 	plugins: [
 		tailwindcss(),
 		sveltekit(),

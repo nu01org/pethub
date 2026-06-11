@@ -3,7 +3,7 @@
 # Source:
 #   https://github.com/faermanj/utils.sh
 # Update command:
-#   curl -s https://api.github.com/repos/faermanj/utils.sh/releases/latest | jq -r '.assets[] | select(.name=="utils.sh" or .name=="bin/utils.sh") | .browser_download_url' | xargs -n 1 curl -sL -o utils.sh
+#   rm -f utils.sh; curl -s https://api.github.com/repos/faermanj/utils.sh/releases/latest | jq -r '.assets[] | select(.name=="utils.sh" or .name=="bin/utils.sh") | .browser_download_url' | xargs -n 1 curl -sL -o utils.sh
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-${(%):-%N}}")" >/dev/null 2>&1 && pwd)"
 
@@ -225,4 +225,76 @@ elapsed() {
        perf "$msg"
 
        ELAPSED_LAST_CALL="$(date +%s.%N)"
+}
+fetch_url_file() {
+    local url="$1"
+    local file="${url##*/}"   # filename from URL
+
+    local remote_size
+    remote_size=$(
+        curl -fsSI "$url" | awk '
+        BEGIN { IGNORECASE=1 }
+        /^Content-Length:/ {
+            gsub("\r", "", $2)
+            print $2
+        }'
+    )
+
+    if [ -z "$remote_size" ]; then
+        echo "ERROR: Could not determine remote file size: $url" >&2
+        return 1
+    fi
+
+    local local_size=0
+    if [ -f "$file" ]; then
+        local_size=$(stat -c%s "$file" 2>/dev/null || stat -f%z "$file")
+    fi
+
+    if [ "$remote_size" != "$local_size" ]; then
+        echo "Fetching $file ($local_size -> $remote_size bytes)"
+        curl -fsSL "$url" -o "$file"
+    else
+        echo "$file is up to date"
+    fi
+}
+declare -A APT_RENAMES=(
+    [python]=python3
+    [netcat]=netcat-openbsd
+    [postgresql-client]=postgresql-client
+)
+
+declare -A YUM_RENAMES=(
+    [python]=python3
+    [netcat]=nc
+    [postgresql-client]=postgresql
+)
+
+installPkg() {
+    local pkg="$1"
+    local distro
+    local corrected_pkg
+
+    if command -v apt-get >/dev/null 2>&1; then
+        distro="apt"
+        corrected_pkg="${APT_RENAMES[$pkg]:-$pkg}"
+
+        sudo apt-get update
+        sudo apt-get install -y "$corrected_pkg"
+
+    elif command -v dnf >/dev/null 2>&1; then
+        distro="yum"
+        corrected_pkg="${YUM_RENAMES[$pkg]:-$pkg}"
+
+        sudo dnf install -y "$corrected_pkg"
+
+    elif command -v yum >/dev/null 2>&1; then
+        distro="yum"
+        corrected_pkg="${YUM_RENAMES[$pkg]:-$pkg}"
+
+        sudo yum install -y "$corrected_pkg"
+
+    else
+        echo "Unsupported package manager"
+        return 1
+    fi
 }
