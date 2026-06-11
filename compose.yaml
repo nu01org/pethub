@@ -7,13 +7,15 @@ services:
     ports:
       - 5432:5432
     environment:
-      POSTGRES_USER: pethub_db_user
-      POSTGRES_PASSWORD: pethub_dev_password
-      POSTGRES_DB: pethub_db
+      - POSTGRES_USER=pethub_db_user
+      - POSTGRES_PASSWORD=pethub_dev_password
+      - POSTGRES_DB=pethub_db
     volumes:
       - pgdata:/var/lib/postgresql
 
 volumes:
+  # To prune system: docker system prune -a --volumes
+  # To remove docker volumes: docker volume rm $(docker volume ls -q)
   pgdata:
     driver: local
 #
