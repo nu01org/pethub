@@ -3,7 +3,9 @@
   "packages": [
     "nodejs@22",
     "direnv@latest",
-    "mkcert@latest"
+    "mkcert@latest",
+    "quarkus@latest",
+    "graalvmPackages.graalvm-ce@latest"
   ],
   "shell": {
     "init_hook": [

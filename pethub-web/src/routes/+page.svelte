@@ -1,3 +1,47 @@
+<script lang="ts">
+	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
+	import { authClient } from '$lib/auth-client';
+	import { fetchInitConfig } from '$lib/init';
+	import { initGoogleSignIn } from '$lib/google-signin';
+
+	let googleButtonTarget = $state<HTMLDivElement>();
+	let signingIn = $state(false);
+	let authError = $state<string | null>(null);
+
+	onMount(async () => {
+		try {
+			const init = await fetchInitConfig();
+			const google = init.auth.providers.find((provider) => provider.id === 'google');
+			if (!google) return;
+
+			await initGoogleSignIn({
+				clientId: google.clientId,
+				buttonTarget: googleButtonTarget,
+				autoPrompt: true,
+				onCredential: async ({ credential }) => {
+					signingIn = true;
+					authError = null;
+					const { error } = await authClient.signIn.social({
+						provider: 'google',
+						idToken: { token: credential }
+					});
+					if (error) {
+						signingIn = false;
+						authError = error.message ?? 'Google sign-in failed. Please try again.';
+					} else {
+						// Signed in: take the user to the app home
+						await goto('/app');
+					}
+				}
+			});
+		} catch (e) {
+			console.error('Failed to initialize sign-in', e);
+			authError = 'Sign-in is unavailable right now.';
+		}
+	});
+</script>
+
 <section class="min-h-screen bg-[linear-gradient(135deg,#fffaf4_0%,#f4fbff_45%,#eef2ff_100%)] px-4 py-10 text-slate-800 sm:px-6 lg:px-8">
 	<div class="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[1.02fr_0.98fr]">
 		<article class="space-y-6">
@@ -6,13 +50,15 @@
 				Keep pet routines, updates, and happy moments in one simple place. Pet Hub helps you stay connected to your companions every day.
 			</p>
 			<div class="flex flex-wrap items-center gap-3">
-				<!-- <a
-					href="/demo/better-auth/login"
-					class="rounded-full bg-violet-600 px-6 py-3 text-base font-semibold text-white shadow-lg shadow-violet-200 transition hover:bg-violet-700 focus:outline-none focus:ring-4 focus:ring-violet-200"
-				>
-					Log in
-				</a> -->
+				{#if signingIn}
+					<p class="text-base text-slate-600">Signing you in…</p>
+				{:else}
+					<div bind:this={googleButtonTarget}></div>
+				{/if}
 			</div>
+			{#if authError}
+				<p class="text-sm font-medium text-rose-600">{authError}</p>
+			{/if}
 
 		</article>
 

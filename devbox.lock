@@ -53,6 +53,44 @@
       "last_modified": "2026-06-02T02:01:59Z",
       "resolved": "github:NixOS/nixpkgs/ffa10e26ae11d676b2db836259889f1f571cb14f?lastModified=1780365719"
     },
+    "graalvmPackages.graalvm-ce@latest": {
+      "last_modified": "2026-05-21T08:15:18Z",
+      "resolved": "github:NixOS/nixpkgs/4a29d733e8a7d5b824c3d8c958a946a9867b3eb2#graalvmPackages.graalvm-ce",
+      "source": "devbox-search",
+      "version": "25.0.2",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/416qkgy5pfvs520nmgnzsqa3b7v20r94-graalvm-ce-25.0.2",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/416qkgy5pfvs520nmgnzsqa3b7v20r94-graalvm-ce-25.0.2"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/h9va2078051fzjqlq9147q8bn9623dwm-graalvm-ce-25.0.2",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/h9va2078051fzjqlq9147q8bn9623dwm-graalvm-ce-25.0.2"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/kcha0gpn0pncdiji0g3rxjgzyk5xy05v-graalvm-ce-25.0.2",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/kcha0gpn0pncdiji0g3rxjgzyk5xy05v-graalvm-ce-25.0.2"
+        }
+      }
+    },
     "mkcert@latest": {
       "last_modified": "2026-05-21T08:15:18Z",
       "resolved": "github:NixOS/nixpkgs/4a29d733e8a7d5b824c3d8c958a946a9867b3eb2#mkcert",
@@ -147,6 +185,54 @@
             }
           ],
           "store_path": "/nix/store/ac9bklddx1klg92hj7r08xmpky1nwag2-nodejs-22.22.3"
+        }
+      }
+    },
+    "quarkus@latest": {
+      "last_modified": "2026-05-21T08:15:18Z",
+      "resolved": "github:NixOS/nixpkgs/4a29d733e8a7d5b824c3d8c958a946a9867b3eb2#quarkus",
+      "source": "devbox-search",
+      "version": "3.35.3",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/zbxks11as98pjfxjw8yzm2ylipxkkp74-quarkus-cli-3.35.3",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/zbxks11as98pjfxjw8yzm2ylipxkkp74-quarkus-cli-3.35.3"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/s28n577a5jyik2z7mzwb60zx35hrcsyd-quarkus-cli-3.35.3",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/s28n577a5jyik2z7mzwb60zx35hrcsyd-quarkus-cli-3.35.3"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/fj7fxryp9wxgrpljc880czjml5s79wkv-quarkus-cli-3.35.3",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/fj7fxryp9wxgrpljc880czjml5s79wkv-quarkus-cli-3.35.3"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/rs90886f5lwpf7lfpqzwisy9vlms0qma-quarkus-cli-3.35.3",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/rs90886f5lwpf7lfpqzwisy9vlms0qma-quarkus-cli-3.35.3"
         }
       }
     }

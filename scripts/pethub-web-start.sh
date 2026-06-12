@@ -3,13 +3,15 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_DIR="$(cd "$SCRIPT_DIR/../pethub-web" && pwd)"
+REPO_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+PROJECT_DIR="$REPO_DIR/pethub-web"
 
 cd "$PROJECT_DIR"
 
-# if .envrc exists, source it
-if [ -f ".SCRIPT_DIR.envrc" ]; then
-    source ".SCRIPT_DIR.envrc"
+# Environment comes exclusively from the repo root .envrc (no .env files)
+if [ -f "$REPO_DIR/.envrc" ]; then
+    # shellcheck source=/dev/null
+    source "$REPO_DIR/.envrc"
 fi
 
 echo "Starting the development server..."

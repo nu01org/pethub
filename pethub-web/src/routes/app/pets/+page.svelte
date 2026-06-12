@@ -1,0 +1,9 @@
+<section class="space-y-4">
+	<h1 class="text-3xl font-black tracking-tight text-slate-900">Your Pets 🐶</h1>
+	<p class="max-w-lg text-lg text-slate-600">
+		Profiles, routines, and care notes for every companion will live here.
+	</p>
+	<div class="rounded-3xl bg-white/90 p-8 text-center text-slate-500 shadow-lg shadow-violet-100 ring-1 ring-slate-100">
+		Coming soon
+	</div>
+</section>
